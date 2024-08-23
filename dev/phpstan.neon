@@ -1,0 +1,22 @@
+includes:
+
+	# Doctrine
+	- ../vendor/phpstan/phpstan-doctrine/extension.neon
+
+	# Nette
+	- ../vendor/phpstan/phpstan-nette/extension.neon
+
+	# Strict rules
+	- ../vendor/phpstan/phpstan-strict-rules/rules.neon
+
+parameters:
+	level: 8
+	paths:
+		- ..\app
+
+	# Temp directory
+	tmpDir: ../temp/phpstan
+
+	ignoreErrors:
+#		- identifier: missingType.iterableValue
+#		- identifier: missingType.generics

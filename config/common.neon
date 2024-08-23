@@ -1,0 +1,37 @@
+parameters:
+	doctrine:
+		host: db
+		user: root
+		password: root
+		dbname: app
+
+application:
+	errorPresenter:
+		4xx: Error:Error4xx
+		5xx: Error:Error5xx
+	mapping: App\UI\Presenter\*\**Presenter
+
+
+database:
+	dsn: 'pgsql:host=db;port=5432;dbname=app'
+	user: 'root'
+	password: 'root'
+
+
+latte:
+	strictTypes: yes
+	strictParsing: yes
+	extensions:
+		- App\UI\Accessory\LatteExtension
+
+
+di:
+	export:
+		parameters: no
+		tags: no
+
+extensions:
+	console: Contributte\Console\DI\ConsoleExtension(%consoleMode%)
+
+includes:
+	- doctrine.neon
