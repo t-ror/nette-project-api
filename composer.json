@@ -30,7 +30,8 @@
 		"nettrine/orm": "^0.8.4",
 		"nettrine/annotations": "^0.7.0",
 		"nettrine/cache": "^0.3.0",
-		"nettrine/dbal": "^0.8.2"
+		"nettrine/dbal": "^0.8.2",
+		"contributte/apitte": "^0.12.3"
 	},
 	"require-dev": {
 		"nette/tester": "^2.5",

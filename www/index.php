@@ -2,11 +2,25 @@
 
 declare(strict_types=1);
 
-use Tracy\Debugger;
+use Apitte\Core\Application\IApplication as ApiApplication;
+use App\Bootstrap;
+use Nette\Application\Application as UIApplication;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$configurator = App\Bootstrap::boot();
+$configurator = Bootstrap::boot();
 $container = $configurator->createContainer();
-$application = $container->getByType(Nette\Application\Application::class);
-$application->run();
+
+
+$isApi = str_starts_with($_SERVER['REQUEST_URI'], '/api');
+$container = Bootstrap::boot()->createContainer();
+
+if ($isApi) {
+	// Apitte application
+	$applicationApi = $container->getByType(ApiApplication::class);
+	$applicationApi->run();
+} else {
+	// Nette application
+	$applicationUi = $container->getByType(UIApplication::class);
+	$applicationUi->run();
+}
