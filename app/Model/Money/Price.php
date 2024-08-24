@@ -2,6 +2,7 @@
 
 namespace App\Model\Money;
 
+use App\Model\Entity\Product\Product;
 use Money\Currency;
 use Money\Formatter\DecimalMoneyFormatter;
 use Money\Money;
@@ -20,6 +21,11 @@ final class Price
 	{
 		$currency = new Currency($this->currencyCode->value);
 		$this->money = $this->getParser()->parse($this->price, $currency);
+	}
+
+	public static function createForProduct(string $price): Price
+	{
+		return new Price($price, CurrencyCode::CZK, Product::PRICE_DECIMALS);
 	}
 
 	public function getAmount(): string

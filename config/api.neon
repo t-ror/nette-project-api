@@ -25,6 +25,12 @@ api:
 			autobasepath: true
 		Apitte\Core\DI\Plugin\CoreDecoratorPlugin:
 		Apitte\Core\DI\Plugin\CoreMappingPlugin:
+			types:
+				numeric: App\Api\TypeMapper\NumericTypeMapper
+				ordering: App\Api\TypeMapper\OrderingTypeMapper
+				productSortableColumn: App\Api\V1\TypeMapper\ProductSortableColumnTypeMapper
+			request:
+				validator: Apitte\Core\Mapping\Validator\SymfonyValidator
 
 services:
 	- App\Api\V1\Product\ProductController

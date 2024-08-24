@@ -11,6 +11,7 @@ use Apitte\Core\Http\ApiResponse;
 use App\Api\V1\BaseV1Controller;
 use App\Api\V1\Product\Exception\ProductNotFoundException;
 use App\Api\V1\Product\Service\ProductProvider;
+use App\Api\V1\Product\ValueObject\ProductFilter;
 use Nette\Http\IResponse;
 
 #[Path('/product')]
@@ -47,6 +48,34 @@ final class ProductController extends BaseV1Controller
 
 		return $response
 			->writeJsonBody($productData)
+			->withHeader('Content-Type', 'application/json');
+	}
+
+	#[Path('/list')]
+	#[Method('GET')]
+	#[RequestParameter(name: 'name', type: 'string', in: 'query', required: false, description: 'Product name')]
+	#[RequestParameter(name: 'priceFrom', type: 'numeric', in: 'query', required: false, description: 'Product price from')]
+	#[RequestParameter(name: 'priceTo', type: 'numeric', in: 'query', required: false, description: 'Product price to')]
+	#[RequestParameter(name: 'createdAtFrom', type: 'int', in: 'query', required: false, description: 'Product timestamp of date created from')]
+	#[RequestParameter(name: 'createdAtTo', type: 'int', in: 'query', required: false, description: 'Product timestamp of date created to')]
+	#[RequestParameter(name: 'orderBy', type: 'productSortableColumn', in: 'query', required: false, description: 'Column by which list will be ordered by')]
+	#[RequestParameter(name: 'ordering', type: 'ordering', in: 'query', required: false, description: 'Ordering of the list ASC or DESC')]
+	public function list(ApiRequest $request, ApiResponse $response): ApiResponse
+	{
+		$productFilter = new ProductFilter(
+			$request->hasQueryParam('name') ? $request->getQueryParam('name') : null,
+			$request->hasQueryParam('priceFrom') ? $request->getQueryParam('priceFrom') : null,
+			$request->hasQueryParam('priceTo') ? $request->getQueryParam('priceTo') : null,
+			$request->hasQueryParam('createdAtFrom') ? (int) $request->getQueryParam('createdAtFrom') : null,
+			$request->hasQueryParam('createdAtTo') ? (int) $request->getQueryParam('createdAtTo') : null,
+			$request->hasQueryParam('orderBy') ? $request->getQueryParam('orderBy') : null,
+			$request->hasQueryParam('ordering') ? $request->getQueryParam('ordering') : null,
+		);
+
+		$productDataResult = $this->productProvider->list($productFilter);
+
+		return $response
+			->writeJsonBody($productDataResult)
 			->withHeader('Content-Type', 'application/json');
 	}
 
