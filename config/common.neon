@@ -36,3 +36,4 @@ extensions:
 includes:
 	- api.neon
 	- doctrine.neon
+	- parameters.neon

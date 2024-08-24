@@ -1,6 +1,33 @@
 extensions:
 	api: Apitte\Core\DI\ApiExtension
+	middlewares: Contributte\Middlewares\DI\MiddlewaresExtension
+
+middlewares:
+	middlewares:
+		# Enable Tracy
+		- Contributte\Middlewares\TracyMiddleware
+
+		# Usefull path attributes
+		- Contributte\Middlewares\AutoBasePathMiddleware
+
+		# Custom middlewares
+		- App\Api\V1\Middleware\AuthenticationMiddleware
+
+		# Apitte
+		- Apitte\Middlewares\ApiMiddleware
 
 api:
-    debug: %debugMode%
-    catchException: true
+	debug: %debugMode%
+	catchException: true
+	plugins:
+		Apitte\Middlewares\DI\MiddlewaresPlugin:
+			tracy: true
+			autobasepath: true
+		Apitte\Core\DI\Plugin\CoreDecoratorPlugin:
+		Apitte\Core\DI\Plugin\CoreMappingPlugin:
+
+services:
+	- App\Api\V1\Product\ProductController
+	- App\Api\V1\Service\RequestAuthenticator(%api.v1%)
+	- App\Api\V1\Middleware\AuthenticationMiddleware
+	- App\Api\V1\Product\Service\ProductProvider

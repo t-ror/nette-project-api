@@ -67,7 +67,7 @@ db-diff:
 
 ## CI Stack
 .PHONY: ci
-ci: cs phpstan test-entity
+ci: cs phpstan test-entity rmcache
 
 ## CodeSniffer - checks codestyle and typehints
 .PHONY: cs

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Apitte\Core\Application\IApplication as ApiApplication;
+use Contributte\Middlewares\Application\IApplication as ApiApplication;
 use App\Bootstrap;
 use Nette\Application\Application as UIApplication;
 

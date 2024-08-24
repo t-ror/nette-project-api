@@ -1,0 +1,4 @@
+parameters:
+	api:
+		v1:
+			apiKey: '4d04a3db45bc715908d4d2ec7aa78a5c0126c22ecb7b17eb4fd695b5075b4f85'
