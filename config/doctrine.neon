@@ -5,15 +5,10 @@ extensions:
 	doctrine.orm: Nettrine\ORM\DI\OrmExtension
 	doctrine.orm.attributes: Nettrine\ORM\DI\OrmAttributesExtension
 	doctrine.orm.cache: Nettrine\ORM\DI\OrmCacheExtension
-	doctrine.orm.annotations: Nettrine\ORM\DI\OrmAnnotationsExtension
 	doctrine.orm.console: Nettrine\ORM\DI\OrmConsoleExtension
 	doctrine.cache: Nettrine\Cache\DI\CacheExtension
 
 doctrine.orm.attributes:
-	mapping:
-		App\Model: %appDir%/Model/Entity
-
-doctrine.orm.annotations:
 	mapping:
 		App\Model: %appDir%/Model/Entity
 

@@ -60,7 +60,7 @@ exec:
 .PHONY: db-diff
 db-diff:
 	@if [ -f /.dockerenv ] || [ "$(RAW)" = "1" ] ; then \
-		bin/console orm:schema-tool:update --dump-sql > diff.sq --complete; \
+		bin/console orm:schema-tool:update --dump-sql > diff.sql --complete; \
 	else \
 		docker-compose -f docker-compose.yml exec app bin/console orm:schema-tool:update --dump-sql > diff.sql --complete; \
 	fi; \

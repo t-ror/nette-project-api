@@ -5,7 +5,7 @@
 	"type": "project",
 	"license": ["MIT", "BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
 	"require": {
-		"php": "8.2.21",
+		"php": "8.2.22",
 		"nette/application": "^3.2.3",
 		"nette/bootstrap": "^3.2",
 		"nette/caching": "^3.2",
@@ -31,7 +31,8 @@
 		"nettrine/annotations": "^0.7.0",
 		"nettrine/cache": "^0.3.0",
 		"nettrine/dbal": "^0.8.2",
-		"contributte/apitte": "^0.12.3"
+		"contributte/apitte": "^0.12.3",
+		"moneyphp/money": "^4.5.0"
 	},
 	"require-dev": {
 		"nette/tester": "^2.5",
