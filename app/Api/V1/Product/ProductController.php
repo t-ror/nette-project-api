@@ -6,7 +6,6 @@ use Apitte\Core\Annotation\Controller\Id;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\RequestParameter;
-use Apitte\Core\Annotation\Controller\RequestParameters;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use App\Api\V1\BaseV1Controller;
@@ -14,10 +13,8 @@ use App\Api\V1\Product\Exception\ProductNotFoundException;
 use App\Api\V1\Product\Service\ProductProvider;
 use Nette\Http\IResponse;
 
-/**
- * @Path("/product")
- * @Id("product")
- */
+#[Path('/product')]
+#[Id('product')]
 final class ProductController extends BaseV1Controller
 {
 
@@ -27,13 +24,9 @@ final class ProductController extends BaseV1Controller
 	{
 	}
 
-	/**
-	 * @Path("/{id}")
-	 * @Method("GET")
-	 * @RequestParameters({
-	 *     @RequestParameter(name="id", type="int", required=true, description="Product ID")
-	 *  })
-	 */
+	#[Path('/{id}')]
+	#[Method('GET')]
+	#[RequestParameter(name: 'id', type: 'int', in: 'path', required: true, description: 'Product ID')]
 	public function get(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		if (!$request->hasParameter('id')) {

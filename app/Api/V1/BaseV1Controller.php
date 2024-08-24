@@ -6,10 +6,8 @@ use Apitte\Core\Annotation\Controller\Id;
 use Apitte\Core\Annotation\Controller\Path;
 use App\Api\BaseController;
 
-/**
- * @Path("/v1")
- * @Id("v1")
- */
+#[Path('/v1')]
+#[Id('v1')]
 class BaseV1Controller extends BaseController
 {
 

@@ -6,10 +6,8 @@ use Apitte\Core\Annotation\Controller\Id;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\UI\Controller\IController;
 
-/**
- * @Path("/api")
- * @Id("api")
- */
+#[Path('/api')]
+#[Id('api')]
 class BaseController implements IController
 {
 
