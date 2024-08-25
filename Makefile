@@ -9,6 +9,8 @@ install:
 		make up; \
 		docker-compose -f docker-compose.yml exec app composer install; \
 		docker-compose -f docker-compose.yml exec app chown -R www-data:www-data temp log; \
+		docker-compose -f docker-compose.yml exec app bin/console orm:schema-tool:update --force --complete; \
+		make rmcache; \
 		echo 'Installation complete. The app is running.'; \
 	fi; \
 

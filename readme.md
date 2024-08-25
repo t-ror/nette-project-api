@@ -8,7 +8,7 @@ Base for Nette projects.
 ## Installation
 Clone repository using git
 ```bash
-git clone https://github.com/t-ror/nette-project.git
+git clone https://github.com/t-ror/nette-project-api.git
 ```
 
 Use install command
