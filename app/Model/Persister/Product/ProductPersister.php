@@ -38,4 +38,13 @@ final class ProductPersister
 		$productOrm->setUpdatedAt($this->dateTimeProvider->getDateTime());
 	}
 
+	public function delete(Product $product, bool $force): void
+	{
+		if ($force) {
+			$this->entityManager->remove($product);
+		} else {
+			$product->setDeletedAt($this->dateTimeProvider->getDateTime());
+		}
+	}
+
 }

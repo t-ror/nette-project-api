@@ -49,4 +49,16 @@ final class ProductPersistenceManager
 		return $this->productMapper->mapProductOrmToArray($productOrm);
 	}
 
+	public function delete(int $productId, bool $force): void
+	{
+		$productOrm = $this->productRepository->findById($productId);
+		if ($productOrm === null || $productOrm->isDeleted()) {
+			throw new ProductNotFoundException($productId);
+		}
+
+		$this->productPersister->delete($productOrm, $force);
+
+		$this->entityManager->flush();
+	}
+
 }

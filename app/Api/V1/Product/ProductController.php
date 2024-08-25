@@ -123,4 +123,29 @@ final class ProductController extends BaseV1Controller
 			->withHeader('Content-Type', 'application/json');
 	}
 
+	#[Path('/delete/{id}')]
+	#[Method('DELETE')]
+	#[RequestParameter(name: 'id', type: 'int', in: 'path', required: true, description: 'Product ID')]
+	#[RequestParameter(name: 'force', type: 'bool', in: 'query', required: false, description: 'Force delete so it actually completely removes product from database (default = false)')]
+	public function delete(ApiRequest $request, ApiResponse $response): ApiResponse
+	{
+		$productId = $request->getParameter('id');
+		$force = $request->hasQueryParam('force') ? $request->getParameter('force') : false;
+
+		try {
+			$this->productPersistenceManager->delete($productId, $force);
+		} catch (ProductNotFoundException $exception) {
+			return $response
+				->withStatus(IResponse::S400_BadRequest)
+				->writeBody($exception->getMessage())
+				->withHeader('Content-Type', 'application/json');
+		}
+
+		return $response
+			->writeJsonBody([
+				'message' => 'Product was successfully deleted',
+			])
+			->withHeader('Content-Type', 'application/json');
+	}
+
 }
