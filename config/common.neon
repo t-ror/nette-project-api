@@ -37,3 +37,4 @@ includes:
 	- api.neon
 	- doctrine.neon
 	- parameters.neon
+	- console.neon

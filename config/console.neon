@@ -1,0 +1,9 @@
+console:
+	name: Nette API project
+	version: '1.0'
+	catchExceptions: false
+	autoExit: false
+	url: http://localhost/
+
+services:
+	- App\Command\OpenApiSchemaCommand

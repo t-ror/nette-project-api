@@ -32,6 +32,13 @@ api:
 				productSortableColumn: App\Api\V1\TypeMapper\ProductSortableColumnTypeMapper
 			request:
 				validator: Apitte\Core\Mapping\Validator\SymfonyValidator
+		Apitte\OpenApi\DI\OpenApiPlugin:
+		Apitte\Core\DI\Plugin\CoreSchemaPlugin:
+			schema:
+				openapi: Apitte\OpenApi\Schema\OpenApiSchema
+			loaders:
+				annotations:
+					enable: true
 
 services:
 	- App\Api\V1\Product\ProductController

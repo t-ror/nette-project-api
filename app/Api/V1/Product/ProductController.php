@@ -4,10 +4,12 @@ namespace App\Api\V1\Product;
 
 use Apitte\Core\Annotation\Controller\Id;
 use Apitte\Core\Annotation\Controller\Method;
+use Apitte\Core\Annotation\Controller\OpenApi;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\RequestBody;
 use Apitte\Core\Annotation\Controller\RequestParameter;
 use Apitte\Core\Annotation\Controller\Response;
+use Apitte\Core\Annotation\Controller\Tag;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use App\Api\V1\BaseV1Controller;
@@ -21,6 +23,14 @@ use Nette\Http\IResponse;
 
 #[Path('/product')]
 #[Id('product')]
+#[Tag('Product')]
+#[OpenApi('
+	"openapi": "3.0.2"
+	"info":
+		"title": Nette API
+		"version": "1.0.0"
+		"description": "Product API based on an assigment from CloudSailor"
+')]
 final class ProductController extends BaseV1Controller
 {
 
@@ -35,15 +45,11 @@ final class ProductController extends BaseV1Controller
 	#[Method('GET')]
 	#[RequestParameter(name: 'id', type: 'int', in: 'path', required: true, description: 'Product ID')]
 	#[Response(description: 'Returns single product data', entity: ProductResponseEntity::class)]
+	#[OpenApi('
+		"summary": "Get single product"
+	')]
 	public function get(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
-		if (!$request->hasParameter('id')) {
-			return $response
-				->withStatus(IResponse::S400_BadRequest)
-				->writeBody('Missing "id" parameter')
-				->withHeader('Content-Type', 'application/json');
-		}
-
 		try {
 			$productData = $this->productProvider->getById($request->getParameter('id'));
 		} catch (ProductNotFoundException $exception) {
@@ -70,6 +76,9 @@ final class ProductController extends BaseV1Controller
 	#[RequestParameter(name: 'page', type: 'intGreaterThanZero', in: 'query', required: false, description: 'Page of the list (default 1)')]
 	#[RequestParameter(name: 'limit', type: 'intGreaterThanZero', in: 'query', required: false, description: 'Page limit of queried items (default 100)')]
 	#[Response(description: 'Returns paginated list of product data')]
+	#[OpenApi('
+		"summary": "Get list of products"
+	')]
 	public function list(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		$productFilter = new ProductFilter(
@@ -95,6 +104,9 @@ final class ProductController extends BaseV1Controller
 	#[Method('POST')]
 	#[RequestBody(entity: Product::class)]
 	#[Response(description: 'Returns created product data', entity: ProductResponseEntity::class)]
+	#[OpenApi('
+		"summary": "Create product"
+	')]
 	public function create(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		/** @var Product $productRequestEntity */
@@ -112,6 +124,9 @@ final class ProductController extends BaseV1Controller
 	#[RequestParameter(name: 'id', type: 'int', in: 'path', required: true, description: 'Product ID')]
 	#[RequestBody(entity: Product::class)]
 	#[Response(description: 'Returns updated product data', entity: ProductResponseEntity::class)]
+	#[OpenApi('
+		"summary": "Update product"
+	')]
 	public function update(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		/** @var Product $productRequestEntity */
@@ -138,6 +153,9 @@ final class ProductController extends BaseV1Controller
 	#[RequestParameter(name: 'id', type: 'int', in: 'path', required: true, description: 'Product ID')]
 	#[RequestParameter(name: 'force', type: 'bool', in: 'query', required: false, description: 'Force delete so it actually completely removes product from database (default = false)')]
 	#[Response(description: 'Returns simple message that product has been deleted')]
+	#[OpenApi('
+		"summary": "Delete product"
+	')]
 	public function delete(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		$productId = $request->getParameter('id');
