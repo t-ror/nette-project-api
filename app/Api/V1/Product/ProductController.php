@@ -91,13 +91,10 @@ final class ProductController extends BaseV1Controller
 		/** @var Product $productRequestEntity */
 		$productRequestEntity = $request->getEntity();
 
-		$productId = $this->productPersistenceManager->create($productRequestEntity);
+		$productData = $this->productPersistenceManager->create($productRequestEntity);
 
 		return $response
-			->writeJsonBody([
-				'message' => sprintf('Product was successfully created'),
-				'productId' => $productId,
-			])
+			->writeJsonBody($productData)
 			->withHeader('Content-Type', 'application/json');
 	}
 

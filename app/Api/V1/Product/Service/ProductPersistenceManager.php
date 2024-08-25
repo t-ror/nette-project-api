@@ -20,13 +20,16 @@ final class ProductPersistenceManager
 	{
 	}
 
-	public function create(Product $productRequestEntity): int
+	/**
+	 * @return array<string, mixed>
+	 */
+	public function create(Product $productRequestEntity): array
 	{
 		$productOrm = $this->productPersister->createFromRequestEntity($productRequestEntity);
 
 		$this->entityManager->flush();
 
-		return $productOrm->getId();
+		return $this->productMapper->mapProductOrmToArray($productOrm);
 	}
 
 	/**
