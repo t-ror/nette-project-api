@@ -26,7 +26,7 @@ final class AuthenticationMiddleware implements IMiddleware
 		callable $next
 	): ResponseInterface
 	{
-		if (str_starts_with('/api/v1', $request->getUri()->getPath())) {
+		if (str_starts_with('/api/v1/schema', $request->getUri()->getPath()) || str_starts_with('/api/v1', $request->getUri()->getPath())) {
 			return $next($request, $response);
 		}
 

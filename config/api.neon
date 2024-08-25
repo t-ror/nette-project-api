@@ -42,6 +42,7 @@ api:
 
 services:
 	- App\Api\V1\Product\ProductController
+	- App\Api\V1\Schema\SchemaController
 	- App\Api\V1\Service\RequestAuthenticator(%api.v1%)
 	- App\Api\V1\Middleware\AuthenticationMiddleware
 	- App\Api\V1\Product\Service\ProductProvider

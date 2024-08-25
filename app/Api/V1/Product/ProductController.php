@@ -27,9 +27,17 @@ use Nette\Http\IResponse;
 #[OpenApi('
 	"openapi": "3.0.2"
 	"info":
-		"title": Nette API
+		"title": "Nette API"
 		"version": "1.0.0"
 		"description": "Product API based on an assigment from CloudSailor"
+	"security":
+		- "bearerAuth": []
+	"components":
+		"securitySchemes":
+			"bearerAuth":
+				"type": http
+				"scheme": bearer
+				"bearerFormat": JWT
 ')]
 final class ProductController extends BaseV1Controller
 {
@@ -69,8 +77,8 @@ final class ProductController extends BaseV1Controller
 	#[RequestParameter(name: 'name', type: 'string', in: 'query', required: false, description: 'Product name')]
 	#[RequestParameter(name: 'priceFrom', type: 'numeric', in: 'query', required: false, description: 'Product price from')]
 	#[RequestParameter(name: 'priceTo', type: 'numeric', in: 'query', required: false, description: 'Product price to')]
-	#[RequestParameter(name: 'createdAtFrom', type: 'int', in: 'query', required: false, description: 'Product timestamp of date created from')]
-	#[RequestParameter(name: 'createdAtTo', type: 'int', in: 'query', required: false, description: 'Product timestamp of date created to')]
+	#[RequestParameter(name: 'createdAtFrom', type: 'int', in: 'query', required: false, description: 'Timestamp of date created from of a product')]
+	#[RequestParameter(name: 'createdAtTo', type: 'int', in: 'query', required: false, description: 'Timestamp of date created to of a product')]
 	#[RequestParameter(name: 'orderBy', type: 'productSortableColumn', in: 'query', required: false, description: 'Column by which list will be ordered by (default "id")')]
 	#[RequestParameter(name: 'ordering', type: 'ordering', in: 'query', required: false, description: 'Ordering of the list ASC or DESC (default ASC)')]
 	#[RequestParameter(name: 'page', type: 'intGreaterThanZero', in: 'query', required: false, description: 'Page of the list (default 1)')]
