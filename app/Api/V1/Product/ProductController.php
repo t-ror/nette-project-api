@@ -5,11 +5,14 @@ namespace App\Api\V1\Product;
 use Apitte\Core\Annotation\Controller\Id;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
+use Apitte\Core\Annotation\Controller\RequestBody;
 use Apitte\Core\Annotation\Controller\RequestParameter;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use App\Api\V1\BaseV1Controller;
 use App\Api\V1\Product\Exception\ProductNotFoundException;
+use App\Api\V1\Product\RequestEntity\Product;
+use App\Api\V1\Product\Service\ProductPersistenceManager;
 use App\Api\V1\Product\Service\ProductProvider;
 use App\Api\V1\Product\ValueObject\ProductFilter;
 use Nette\Http\IResponse;
@@ -21,6 +24,7 @@ final class ProductController extends BaseV1Controller
 
 	public function __construct(
 		private ProductProvider $productProvider,
+		private ProductPersistenceManager $productPersistenceManager,
 	)
 	{
 	}
@@ -76,6 +80,24 @@ final class ProductController extends BaseV1Controller
 
 		return $response
 			->writeJsonBody($productDataResult)
+			->withHeader('Content-Type', 'application/json');
+	}
+
+	#[Path('/create')]
+	#[Method('POST')]
+	#[RequestBody(entity: Product::class)]
+	public function create(ApiRequest $request, ApiResponse $response): ApiResponse
+	{
+		/** @var Product $productRequestEntity */
+		$productRequestEntity = $request->getEntity();
+
+		$productId = $this->productPersistenceManager->create($productRequestEntity);
+
+		return $response
+			->writeJsonBody([
+				'message' => sprintf('Product was successfully created'),
+				'productId' => $productId,
+			])
 			->withHeader('Content-Type', 'application/json');
 	}
 

@@ -9,12 +9,13 @@ use App\Model\Money\Price;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
+use Kdyby\DateTimeProvider\DateTimeProviderInterface;
 
 #[Entity]
 class Product extends EntityOrm
 {
 
-	private const NAME_MAX_LENGTH = 100;
+	public const NAME_MAX_LENGTH = 100;
 	public const PRICE_DECIMALS = 2;
 
 	use TId;
@@ -33,11 +34,11 @@ class Product extends EntityOrm
 
 	private ?DateTimeImmutable $updatedAt = null;
 
-	public function __construct(string $name, Price $price, DateTimeImmutable $createdAt)
+	public function __construct(string $name, Price $price, DateTimeProviderInterface $dateTimeProvider)
 	{
 		$this->name = $name;
 		$this->price = $price->getAmount();
-		$this->createdAt = $createdAt;
+		$this->createdAt = $dateTimeProvider->getDateTime();
 	}
 
 	public function getName(): string

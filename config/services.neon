@@ -1,6 +1,8 @@
 services:
 	- App\Core\RouterFactory::createRouter
 	- App\Model\Repository\Product\ProductRepository
+	- App\Model\Persister\Product\ProductPersister
+	- Kdyby\DateTimeProvider\Provider\CurrentProvider
 
 search:
 	-	in: %appDir%

@@ -18,7 +18,7 @@ middlewares:
 
 api:
 	debug: %debugMode%
-	catchException: true
+	catchException: false
 	plugins:
 		Apitte\Middlewares\DI\MiddlewaresPlugin:
 			tracy: true
@@ -37,3 +37,4 @@ services:
 	- App\Api\V1\Service\RequestAuthenticator(%api.v1%)
 	- App\Api\V1\Middleware\AuthenticationMiddleware
 	- App\Api\V1\Product\Service\ProductProvider
+	- App\Api\V1\Product\Service\ProductPersistenceManager

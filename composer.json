@@ -4,6 +4,12 @@
 	"keywords": ["nette"],
 	"type": "project",
 	"license": ["MIT", "BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "git@github.com:MIS-DN/DateTimeProvider.git"
+  		}
+	],
 	"require": {
 		"php": "8.2.22",
 		"nette/application": "^3.2.3",
@@ -32,7 +38,9 @@
 		"nettrine/cache": "^0.3.0",
 		"nettrine/dbal": "^0.8.2",
 		"contributte/apitte": "^0.12.3",
-		"moneyphp/money": "^4.5.0"
+		"moneyphp/money": "^4.5.0",
+		"symfony/validator": "^7.1.3",
+		"kdyby/datetime-provider": "dev-master#cbb1db6ebee4f600927b8dd72857fb1b7eced3cb"
 	},
 	"require-dev": {
 		"nette/tester": "^2.5",
