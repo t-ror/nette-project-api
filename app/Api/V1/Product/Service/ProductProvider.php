@@ -23,7 +23,7 @@ final class ProductProvider
 	public function getById(int $id): array
 	{
 		$productEntity = $this->productRepository->findById($id);
-		if ($productEntity === null) {
+		if ($productEntity === null || $productEntity->isDeleted()) {
 			throw new ProductNotFoundException($id);
 		}
 

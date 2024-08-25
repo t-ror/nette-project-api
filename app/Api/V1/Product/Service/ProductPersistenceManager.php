@@ -38,7 +38,7 @@ final class ProductPersistenceManager
 	public function update(int $productId, Product $productRequestEntity): array
 	{
 		$productOrm = $this->productRepository->findById($productId);
-		if ($productOrm === null) {
+		if ($productOrm === null || $productOrm->isDeleted()) {
 			throw new ProductNotFoundException($productId);
 		}
 

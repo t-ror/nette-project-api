@@ -27,12 +27,13 @@ class Product extends EntityOrm
 	private string $price;
 
 	#[Column(type: 'datetime_immutable', nullable: false)]
-
 	private DateTimeImmutable $createdAt;
 
 	#[Column(type: 'datetime_immutable', nullable: true)]
-
 	private ?DateTimeImmutable $updatedAt = null;
+
+	#[Column(type: 'datetime_immutable', nullable: true)]
+	private ?DateTimeImmutable $deletedAt = null;
 
 	public function __construct(string $name, Price $price, DateTimeProviderInterface $dateTimeProvider)
 	{
@@ -85,6 +86,21 @@ class Product extends EntityOrm
 	public function setUpdatedAt(?DateTimeImmutable $updatedAt): void
 	{
 		$this->updatedAt = $updatedAt;
+	}
+
+	public function getDeletedAt(): ?DateTimeImmutable
+	{
+		return $this->deletedAt;
+	}
+
+	public function setDeletedAt(?DateTimeImmutable $deletedAt): void
+	{
+		$this->deletedAt = $deletedAt;
+	}
+
+	public function isDeleted(): bool
+	{
+		return $this->getDeletedAt() !== null;
 	}
 
 }

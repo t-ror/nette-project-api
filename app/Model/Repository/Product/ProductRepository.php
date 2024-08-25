@@ -27,7 +27,8 @@ final class ProductRepository
 	{
 		$queryBuilder = $this->entityManager->createQueryBuilder()
 			->select('product')
-			->from(Product::class, 'product');
+			->from(Product::class, 'product')
+			->andWhere('product.deletedAt IS NULL');
 
 		if ($productFilter->getName() !== null) {
 			$queryBuilder->andWhere('product.name LIKE :name')
