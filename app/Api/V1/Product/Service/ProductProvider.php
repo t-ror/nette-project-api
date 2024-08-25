@@ -3,6 +3,7 @@
 namespace App\Api\V1\Product\Service;
 
 use App\Api\V1\Product\Exception\ProductNotFoundException;
+use App\Api\V1\Product\ResponseEntity\Product;
 use App\Api\V1\Product\ValueObject\ProductFilter;
 use App\Model\Repository\Product\ProductRepository;
 
@@ -17,17 +18,16 @@ final class ProductProvider
 	}
 
 	/**
-	 * @return array<string, mixed>
 	 * @throws ProductNotFoundException
 	 */
-	public function getById(int $id): array
+	public function getById(int $id): Product
 	{
 		$productEntity = $this->productRepository->findById($id);
 		if ($productEntity === null || $productEntity->isDeleted()) {
 			throw new ProductNotFoundException($id);
 		}
 
-		return $this->productMapper->mapProductOrmToArray($productEntity);
+		return $this->productMapper->mapProductOrmToResponseEntity($productEntity);
 	}
 
 	/**
@@ -39,7 +39,7 @@ final class ProductProvider
 
 		$productDataResult = [];
 		foreach ($products as $productEntity) {
-			$productDataResult[] = $this->productMapper->mapProductOrmToArray($productEntity);
+			$productDataResult[] = $this->productMapper->mapProductOrmToResponseEntity($productEntity)->toArray();
 		}
 
 		return $productDataResult;

@@ -7,11 +7,13 @@ use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\RequestBody;
 use Apitte\Core\Annotation\Controller\RequestParameter;
+use Apitte\Core\Annotation\Controller\Response;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use App\Api\V1\BaseV1Controller;
 use App\Api\V1\Product\Exception\ProductNotFoundException;
 use App\Api\V1\Product\RequestEntity\Product;
+use App\Api\V1\Product\ResponseEntity\Product as ProductResponseEntity;
 use App\Api\V1\Product\Service\ProductPersistenceManager;
 use App\Api\V1\Product\Service\ProductProvider;
 use App\Api\V1\Product\ValueObject\ProductFilter;
@@ -32,6 +34,7 @@ final class ProductController extends BaseV1Controller
 	#[Path('/{id}')]
 	#[Method('GET')]
 	#[RequestParameter(name: 'id', type: 'int', in: 'path', required: true, description: 'Product ID')]
+	#[Response(description: 'Returns single product data', entity: ProductResponseEntity::class)]
 	public function get(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		if (!$request->hasParameter('id')) {
@@ -51,7 +54,7 @@ final class ProductController extends BaseV1Controller
 		}
 
 		return $response
-			->writeJsonBody($productData)
+			->writeJsonBody($productData->toArray())
 			->withHeader('Content-Type', 'application/json');
 	}
 
@@ -66,6 +69,7 @@ final class ProductController extends BaseV1Controller
 	#[RequestParameter(name: 'ordering', type: 'ordering', in: 'query', required: false, description: 'Ordering of the list ASC or DESC (default ASC)')]
 	#[RequestParameter(name: 'page', type: 'intGreaterThanZero', in: 'query', required: false, description: 'Page of the list (default 1)')]
 	#[RequestParameter(name: 'limit', type: 'intGreaterThanZero', in: 'query', required: false, description: 'Page limit of queried items (default 100)')]
+	#[Response(description: 'Returns paginated list of product data')]
 	public function list(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		$productFilter = new ProductFilter(
@@ -90,6 +94,7 @@ final class ProductController extends BaseV1Controller
 	#[Path('/create')]
 	#[Method('POST')]
 	#[RequestBody(entity: Product::class)]
+	#[Response(description: 'Returns created product data', entity: ProductResponseEntity::class)]
 	public function create(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		/** @var Product $productRequestEntity */
@@ -98,7 +103,7 @@ final class ProductController extends BaseV1Controller
 		$productData = $this->productPersistenceManager->create($productRequestEntity);
 
 		return $response
-			->writeJsonBody($productData)
+			->writeJsonBody($productData->toArray())
 			->withHeader('Content-Type', 'application/json');
 	}
 
@@ -106,6 +111,7 @@ final class ProductController extends BaseV1Controller
 	#[Method('PUT')]
 	#[RequestParameter(name: 'id', type: 'int', in: 'path', required: true, description: 'Product ID')]
 	#[RequestBody(entity: Product::class)]
+	#[Response(description: 'Returns updated product data', entity: ProductResponseEntity::class)]
 	public function update(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		/** @var Product $productRequestEntity */
@@ -123,7 +129,7 @@ final class ProductController extends BaseV1Controller
 		}
 
 		return $response
-			->writeJsonBody($productData)
+			->writeJsonBody($productData->toArray())
 			->withHeader('Content-Type', 'application/json');
 	}
 
@@ -131,6 +137,7 @@ final class ProductController extends BaseV1Controller
 	#[Method('DELETE')]
 	#[RequestParameter(name: 'id', type: 'int', in: 'path', required: true, description: 'Product ID')]
 	#[RequestParameter(name: 'force', type: 'bool', in: 'query', required: false, description: 'Force delete so it actually completely removes product from database (default = false)')]
+	#[Response(description: 'Returns simple message that product has been deleted')]
 	public function delete(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		$productId = $request->getParameter('id');

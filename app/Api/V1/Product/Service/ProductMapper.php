@@ -2,23 +2,21 @@
 
 namespace App\Api\V1\Product\Service;
 
-use App\Model\Entity\Product\Product;
+use App\Api\V1\Product\ResponseEntity\Product;
+use App\Model\Entity\Product\Product as ProductOrm;
 
 final class ProductMapper
 {
 
-	/**
-	 * @return array<string, mixed>
-	 */
-	public function mapProductOrmToArray(Product $product): array
+	public function mapProductOrmToResponseEntity(ProductOrm $productOrm): Product
 	{
-		return [
-			'id' => $product->getId(),
-			'name' => $product->getName(),
-			'price' => $product->getPrice()->getAmount(),
-			'createdAt' => $product->getCreatedAt()->getTimestamp(),
-			'updatedAt' => $product->getUpdatedAt()?->getTimestamp(),
-		];
+		return new Product(
+			$productOrm->getId(),
+			$productOrm->getName(),
+			$productOrm->getPrice()->getAmount(),
+			$productOrm->getCreatedAt()->getTimestamp(),
+			$productOrm->getUpdatedAt()?->getTimestamp(),
+		);
 	}
 
 }

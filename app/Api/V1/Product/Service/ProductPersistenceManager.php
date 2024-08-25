@@ -4,6 +4,7 @@ namespace App\Api\V1\Product\Service;
 
 use App\Api\V1\Product\Exception\ProductNotFoundException;
 use App\Api\V1\Product\RequestEntity\Product;
+use App\Api\V1\Product\ResponseEntity\Product as ProductResponseEntity;
 use App\Model\Persister\Product\ProductPersister;
 use App\Model\Repository\Product\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,22 +21,16 @@ final class ProductPersistenceManager
 	{
 	}
 
-	/**
-	 * @return array<string, mixed>
-	 */
-	public function create(Product $productRequestEntity): array
+	public function create(Product $productRequestEntity): ProductResponseEntity
 	{
 		$productOrm = $this->productPersister->createFromRequestEntity($productRequestEntity);
 
 		$this->entityManager->flush();
 
-		return $this->productMapper->mapProductOrmToArray($productOrm);
+		return $this->productMapper->mapProductOrmToResponseEntity($productOrm);
 	}
 
-	/**
-	 * @return array<string, mixed>
-	 */
-	public function update(int $productId, Product $productRequestEntity): array
+	public function update(int $productId, Product $productRequestEntity): ProductResponseEntity
 	{
 		$productOrm = $this->productRepository->findById($productId);
 		if ($productOrm === null || $productOrm->isDeleted()) {
@@ -46,7 +41,7 @@ final class ProductPersistenceManager
 
 		$this->entityManager->flush();
 
-		return $this->productMapper->mapProductOrmToArray($productOrm);
+		return $this->productMapper->mapProductOrmToResponseEntity($productOrm);
 	}
 
 	public function delete(int $productId, bool $force): void
