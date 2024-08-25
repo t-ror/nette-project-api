@@ -31,4 +31,11 @@ final class ProductPersister
 		return $productOrm;
 	}
 
+	public function updateFromRequestEntity(Product $productOrm, ProductRequestEntity $productRequestEntity): void
+	{
+		$productOrm->setName($productRequestEntity->name);
+		$productOrm->setPrice(Price::createForProduct((string) $productRequestEntity->price));
+		$productOrm->setUpdatedAt($this->dateTimeProvider->getDateTime());
+	}
+
 }

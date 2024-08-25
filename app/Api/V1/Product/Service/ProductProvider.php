@@ -4,7 +4,6 @@ namespace App\Api\V1\Product\Service;
 
 use App\Api\V1\Product\Exception\ProductNotFoundException;
 use App\Api\V1\Product\ValueObject\ProductFilter;
-use App\Model\Entity\Product\Product;
 use App\Model\Repository\Product\ProductRepository;
 
 final class ProductProvider
@@ -12,6 +11,7 @@ final class ProductProvider
 
 	public function __construct(
 		private ProductRepository $productRepository,
+		private ProductMapper $productMapper,
 	)
 	{
 	}
@@ -27,7 +27,7 @@ final class ProductProvider
 			throw new ProductNotFoundException($id);
 		}
 
-		return $this->mapProductToArray($productEntity);
+		return $this->productMapper->mapProductOrmToArray($productEntity);
 	}
 
 	/**
@@ -39,25 +39,10 @@ final class ProductProvider
 
 		$productDataResult = [];
 		foreach ($products as $productEntity) {
-			$productDataResult[] = $this->mapProductToArray($productEntity);
+			$productDataResult[] = $this->productMapper->mapProductOrmToArray($productEntity);
 		}
 
 		return $productDataResult;
-	}
-
-	/**
-	 * @return array<string, mixed>
-	 */
-	private function mapProductToArray(Product $product): array
-	{
-		return [
-			'id' => $product->getId(),
-			'name' => $product->getName(),
-			'price' => $product->getPrice()->getAmount(),
-			'createdAt' => $product->getCreatedAt()->getTimestamp(),
-			'createdAtF' => $product->getCreatedAt(),
-			'updatedAt' => $product->getUpdatedAt()?->getTimestamp(),
-		];
 	}
 
 }

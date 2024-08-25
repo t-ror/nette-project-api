@@ -101,4 +101,29 @@ final class ProductController extends BaseV1Controller
 			->withHeader('Content-Type', 'application/json');
 	}
 
+	#[Path('/update/{id}')]
+	#[Method('PUT')]
+	#[RequestParameter(name: 'id', type: 'int', in: 'path', required: true, description: 'Product ID')]
+	#[RequestBody(entity: Product::class)]
+	public function update(ApiRequest $request, ApiResponse $response): ApiResponse
+	{
+		/** @var Product $productRequestEntity */
+		$productRequestEntity = $request->getEntity();
+
+		$productId = $request->getParameter('id');
+
+		try {
+			$productData = $this->productPersistenceManager->update($productId, $productRequestEntity);
+		} catch (ProductNotFoundException $exception) {
+			return $response
+				->withStatus(IResponse::S400_BadRequest)
+				->writeBody($exception->getMessage())
+				->withHeader('Content-Type', 'application/json');
+		}
+
+		return $response
+			->writeJsonBody($productData)
+			->withHeader('Content-Type', 'application/json');
+	}
+
 }
