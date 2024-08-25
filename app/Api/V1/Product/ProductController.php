@@ -62,8 +62,10 @@ final class ProductController extends BaseV1Controller
 	#[RequestParameter(name: 'priceTo', type: 'numeric', in: 'query', required: false, description: 'Product price to')]
 	#[RequestParameter(name: 'createdAtFrom', type: 'int', in: 'query', required: false, description: 'Product timestamp of date created from')]
 	#[RequestParameter(name: 'createdAtTo', type: 'int', in: 'query', required: false, description: 'Product timestamp of date created to')]
-	#[RequestParameter(name: 'orderBy', type: 'productSortableColumn', in: 'query', required: false, description: 'Column by which list will be ordered by')]
-	#[RequestParameter(name: 'ordering', type: 'ordering', in: 'query', required: false, description: 'Ordering of the list ASC or DESC')]
+	#[RequestParameter(name: 'orderBy', type: 'productSortableColumn', in: 'query', required: false, description: 'Column by which list will be ordered by (default "id")')]
+	#[RequestParameter(name: 'ordering', type: 'ordering', in: 'query', required: false, description: 'Ordering of the list ASC or DESC (default ASC)')]
+	#[RequestParameter(name: 'page', type: 'intGreaterThanZero', in: 'query', required: false, description: 'Page of the list (default 1)')]
+	#[RequestParameter(name: 'limit', type: 'intGreaterThanZero', in: 'query', required: false, description: 'Page limit of queried items (default 100)')]
 	public function list(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		$productFilter = new ProductFilter(
@@ -74,6 +76,8 @@ final class ProductController extends BaseV1Controller
 			$request->hasQueryParam('createdAtTo') ? (int) $request->getQueryParam('createdAtTo') : null,
 			$request->hasQueryParam('orderBy') ? $request->getQueryParam('orderBy') : null,
 			$request->hasQueryParam('ordering') ? $request->getQueryParam('ordering') : null,
+			$request->hasQueryParam('page') ? (int) $request->getQueryParam('page') : null,
+			$request->hasQueryParam('limit') ? (int) $request->getQueryParam('limit') : null,
 		);
 
 		$productDataResult = $this->productProvider->list($productFilter);

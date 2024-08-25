@@ -28,6 +28,7 @@ api:
 			types:
 				numeric: App\Api\TypeMapper\NumericTypeMapper
 				ordering: App\Api\TypeMapper\OrderingTypeMapper
+				intGreaterThanZero: App\Api\TypeMapper\IntGreaterThanZeroTypeMapper
 				productSortableColumn: App\Api\V1\TypeMapper\ProductSortableColumnTypeMapper
 			request:
 				validator: Apitte\Core\Mapping\Validator\SymfonyValidator

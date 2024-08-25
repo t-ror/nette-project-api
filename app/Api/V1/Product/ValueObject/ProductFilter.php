@@ -11,6 +11,8 @@ final readonly class ProductFilter
 
 	private const DEFAULT_ORDER_BY = 'id';
 	private const DEFAULT_ORDERING = Ordering::ASCENDING;
+	private const DEFAULT_PAGE = 1;
+	private const DEFAULT_LIMIT = 100;
 
 	public function __construct(
 		private ?string $name,
@@ -20,6 +22,8 @@ final readonly class ProductFilter
 		private ?int $createdAtTo,
 		private ?string $orderBy,
 		private ?string $ordering,
+		private ?int $page,
+		private ?int $limit,
 	)
 	{
 	}
@@ -65,6 +69,16 @@ final readonly class ProductFilter
 	public function getOrdering(): Ordering
 	{
 		return $this->ordering !== null ? Ordering::from($this->ordering) : self::DEFAULT_ORDERING;
+	}
+
+	public function getPage(): int
+	{
+		return $this->page !== null ? $this->page : self::DEFAULT_PAGE;
+	}
+
+	public function getLimit(): int
+	{
+		return $this->limit !== null ? $this->limit : self::DEFAULT_LIMIT;
 	}
 
 }

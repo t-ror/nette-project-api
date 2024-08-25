@@ -5,6 +5,7 @@ namespace App\Model\Repository\Product;
 use App\Api\V1\Product\ValueObject\ProductFilter;
 use App\Model\Entity\Product\Product;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 final class ProductRepository
 {
@@ -57,7 +58,17 @@ final class ProductRepository
 
 		$queryBuilder->orderBy(sprintf('product.%s', $productFilter->getOrderBy()), $productFilter->getOrdering()->value);
 
-		return $queryBuilder->getQuery()->getResult();
+		$queryBuilder->setMaxResults($productFilter->getLimit())
+			->setFirstResult(($productFilter->getPage() - 1) * $productFilter->getLimit());
+
+		$paginator = new Paginator($queryBuilder);
+
+		$products = [];
+		foreach ($paginator as $product) {
+			$products[] = $product;
+		}
+
+		return $products;
 	}
 
 }
