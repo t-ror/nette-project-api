@@ -97,3 +97,12 @@ test-entity:
 	else \
 		docker-compose -f docker-compose.yml exec app php bin/console orm:validate-schema --skip-sync --ansi; \
 	fi; \
+
+## Generate API schema
+.PHONY: api-schema
+api-schema:
+	@if [ -f /.dockerenv ] || [ "$(RAW)" = "1" ] ; then \
+		php bin/console app:api:schema-openapi; \
+	else \
+		docker-compose -f docker-compose.yml exec app bin/console app:api:schema-openapi; \
+	fi; \
